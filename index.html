@@ -329,13 +329,92 @@
     }
   });
 
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    message.textContent =
-      "Online booking is not activated yet. Your registration has not been submitted.";
-  });
+  
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-  updateSlots();
+  const fullName = document.getElementById("fullName").value.trim();
+  const contactNumber = document.getElementById("contact").value.trim();
+  const file = payment.files[0];
+
+  if (!fullName || !contactNumber || !file) {
+    message.textContent =
+      "Please enter your name, contact number, and payment screenshot.";
+    return;
+  }
+
+  if (!allowedTypes.includes(file.type) ||
+      file.size > 5 * 1024 * 1024) {
+    message.textContent =
+      "Upload a JPG, PNG, or WebP image up to 5 MB.";
+    return;
+  }
+
+  bookButton.disabled = true;
+  message.textContent = "Uploading payment screenshot...";
+
+  let uploadedPath = null;
+
+  try {
+    const extension = file.type === "image/png" ? "png" :
+      file.type === "image/webp" ? "webp" : "jpg";
+
+    const uniquePath =
+      crypto.randomUUID() + "." + extension;
+
+    const { data: uploadData, error: uploadError } =
+      await db.storage
+        .from("payment-screenshots")
+        .upload(uniquePath, file, {
+          contentType: file.type,
+          upsert: false
+        });
+
+    if (uploadError) throw uploadError;
+    uploadedPath = uploadData.path;
+
+    message.textContent = "Saving your booking...";
+
+    const { data, error } = await db.rpc(
+      "submit_aroroy_booking",
+      {
+        p_full_name: fullName,
+        p_contact_number: contactNumber,
+        p_screenshot_path: uploadedPath
+      }
+    );
+
+    if (error) throw error;
+
+    const booking = Array.isArray(data) ? data[0] : data;
+
+    if (!booking || !booking.booking_reference) {
+      throw new Error("Booking reference was not returned.");
+    }
+
+    message.textContent =
+      "Booking submitted successfully! Reference: " +
+      booking.booking_reference +
+      ". Your payment is pending verification.";
+
+    form.reset();
+    await updateSlots();
+
+  } catch (error) {
+    console.error("Booking submission failed:", error);
+
+    message.textContent =
+      "Booking could not be completed. Please try again. " +
+      (error.message || "");
+
+    // Leave uploaded files in private storage for troubleshooting.
+    // An administrator can remove unused uploads later.
+  } finally {
+    bookButton.disabled = false;
+    await updateSlots();
+  }
+});
+ updateSlots();
   setInterval(updateSlots, 20000);
 </script>
 </body>
