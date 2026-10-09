@@ -9,56 +9,38 @@
 
   <style>
 
-/* Booking confirmation - no images */
-.booking-confirmation {
-  margin-top: 22px;
-  padding: 24px 16px;
-  border: 3px solid #43b96b;
-  border-radius: 18px;
-  background: #edfff0;
-  color: #145b3b;
-  text-align: center;
-  line-height: 1.6;
-}
+message.innerHTML = `
+  <div class="booking-confirmation">
+    <h2>🎉 BOOKING SUCCESSFUL!</h2>
 
-.booking-confirmation h2 {
-  margin: 0 0 18px;
-  font-size: 27px;
-  color: #145b3b;
-}
+    <p>
+      Thank you for booking with
+      <strong>StepBeat Studio!</strong>
+    </p>
 
-.booking-confirmation p {
-  margin: 14px 0;
-}
+    <p>Your Aroroy class reservation has been recorded.</p>
 
-.booking-reference-label {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 5px 14px;
-  border-radius: 20px;
-  background: #d0f7d6;
-  font-weight: bold;
-  letter-spacing: 2px;
-}
+    <div class="booking-reference-label">
+      BOOKING REFERENCE:
+    </div>
 
-.booking-reference {
-  display: block;
-  width: fit-content;
-  max-width: 100%;
-  margin: 12px auto 18px;
-  padding: 4px 18px;
-  border-radius: 10px;
-  background: #fff27a;
-  color: #075536;
-  font-size: clamp(30px, 8vw, 48px);
-  font-weight: 800;
-  overflow-wrap: anywhere;
-}
+    <div class="booking-reference">
+      ${booking.booking_reference}
+    </div>
 
-.booking-thanks {
-  font-weight: bold;
-  font-size: 18px;
-}
+    <p>
+      Please save your reference number and
+      wait for payment verification.
+    </p>
+
+    <p class="booking-thanks">
+      See you at StepBeat Studio!
+    </p>
+  </div>
+`;
+
+form.reset();
+await updateSlots();
   </style>
 </head>
 
