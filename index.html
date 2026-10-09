@@ -9,41 +9,189 @@
 
   <style>
 
-message.innerHTML = `
-  <div class="booking-confirmation">
-    <h2>🎉 BOOKING SUCCESSFUL!</h2>
 
-    <p>
-      Thank you for booking with
-      <strong>StepBeat Studio!</strong>
-    </p>
+* { box-sizing: border-box; }
 
-    <p>Your Aroroy class reservation has been recorded.</p>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f3ff;
+  color: #241b35;
+}
 
-    <div class="booking-reference-label">
-      BOOKING REFERENCE:
-    </div>
+header {
+  background: #261345;
+  color: white;
+  text-align: center;
+  padding: 32px 16px;
+}
 
-    <div class="booking-reference">
-      ${booking.booking_reference}
-    </div>
+header h1 {
+  margin: 0 0 8px;
+  letter-spacing: 2px;
+}
 
-    <p>
-      Please save your reference number and
-      wait for payment verification.
-    </p>
+header p { margin: 7px 0; }
 
-    <p class="booking-thanks">
-      See you at StepBeat Studio!
-    </p>
-  </div>
-`;
+.studio-logo {
+  display: block;
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  margin: 0 auto 20px;
+  border-radius: 10px;
+}
 
-form.reset();
-await updateSlots();
+main {
+  max-width: 560px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.card {
+  background: white;
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 5px 24px #241b3512;
+}
+
+.center { text-align: center; }
+
+.price {
+  font-size: 38px;
+  font-weight: 800;
+  color: #6d28d9;
+  margin: 12px 0;
+}
+
+.slot-counter {
+  background: #f3e8ff;
+  border: 2px solid #8b5cf6;
+  border-radius: 14px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+.slot-counter h2 {
+  font-size: 36px;
+  margin: 8px 0;
+  color: #6d28d9;
+}
+
+.slot-label {
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.gcash-title { color: #007dff; }
+
+.gcash-number {
+  font-size: 23px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+label {
+  display: block;
+  margin: 16px 0 7px;
+  font-weight: 700;
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #d6d0e1;
+  border-radius: 9px;
+  font-size: 16px;
+  background: white;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border: 0;
+  border-radius: 10px;
+  background: #6d28d9;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
+.copy-button { background: #007dff; }
+
+.note {
+  font-size: 13px;
+  color: #625873;
+  line-height: 1.6;
+}
+
+#message {
+  margin-top: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  text-align: center;
+  color: #625873;
+  font-size: 12px;
+  padding: 20px;
+}
+
+/* Booking confirmation */
+.booking-confirmation {
+  margin-top: 24px;
+  padding: 30px 18px;
+  border: 3px solid #48b96a;
+  border-radius: 24px;
+  background: #eaf8ed;
+  color: #155b3c;
+  text-align: center;
+  line-height: 1.55;
+}
+
+.booking-confirmation h2 {
+  margin: 0 0 28px;
+  color: #155b3c;
+  font-size: clamp(26px, 6vw, 38px);
+}
+
+.booking-confirmation p {
+  margin: 22px 0;
+  font-size: clamp(17px, 4vw, 23px);
+}
+
+.booking-reference-label {
+  display: block;
+  margin: 28px auto 0;
+  padding: 10px;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  background: #d0f7d6;
+  border-radius: 20px;
+}
+
+.booking-reference {
+  display: inline-block;
+  max-width: 100%;
+  margin: 12px auto 18px;
+  padding: 2px 20px;
+  border-radius: 8px;
+  background: #fff27a;
+  color: #075536;
+  font-size: clamp(42px, 11vw, 64px);
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+.booking-thanks { font-weight: 800; }
   </style>
 </head>
-
 <body>
   <header>
    <img
