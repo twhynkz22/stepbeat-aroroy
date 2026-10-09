@@ -4,28 +4,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#261345">
   <title>StepBeat Studio | Aroroy Class</title>
+
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f5f3ff;
       color: #241b35;
     }
+
     header {
       background: #261345;
       color: white;
       text-align: center;
-      padding: 30px 16px;
+      padding: 32px 16px;
     }
-    header h1 { margin: 0 0 8px; letter-spacing: 2px; }
-    header p { margin: 6px 0; }
+
+    header h1 {
+      margin: 0 0 8px;
+      letter-spacing: 2px;
+    }
+
+    header p { margin: 7px 0; }
+
     main {
       max-width: 560px;
       margin: 24px auto;
       padding: 0 16px;
     }
+
     .card {
       background: white;
       border-radius: 18px;
@@ -33,162 +44,240 @@
       margin-bottom: 18px;
       box-shadow: 0 5px 24px #241b3512;
     }
+
+    .center { text-align: center; }
+
     .price {
-      font-size: 36px;
+      font-size: 38px;
       font-weight: 800;
       color: #6d28d9;
-      text-align: center;
       margin: 12px 0;
     }
-    .center { text-align: center; }
+
+    .slot-counter {
+      background: #f3e8ff;
+      border: 2px solid #8b5cf6;
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 20px;
+    }
+
+    .slot-counter h2 {
+      font-size: 36px;
+      margin: 8px 0;
+      color: #6d28d9;
+    }
+
+    .slot-label {
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .gcash-title { color: #007dff; }
+
+    .gcash-number {
+      font-size: 23px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
     label {
       display: block;
       margin: 16px 0 7px;
       font-weight: 700;
     }
+
     input {
+      display: block;
       width: 100%;
       padding: 13px;
       border: 1px solid #d6d0e1;
       border-radius: 9px;
       font-size: 16px;
+      background: white;
     }
-    input[type="file"] { background: #faf9ff; }
+
     button {
       width: 100%;
-      padding: 15px;
+      padding: 14px;
       border: 0;
       border-radius: 10px;
       background: #6d28d9;
       color: white;
-      font-weight: 700;
       font-size: 16px;
-      margin-top: 20px;
+      font-weight: 700;
+      margin-top: 16px;
       cursor: pointer;
     }
-    button:disabled { opacity: .6; cursor: not-allowed; }
-    .note { font-size: 13px; color: #625873; line-height: 1.5; }
-    #message { margin-top: 16px; overflow-wrap: anywhere; }
+
+    .copy-button { background: #007dff; }
+
+    .note {
+      font-size: 13px;
+      color: #625873;
+      line-height: 1.6;
+    }
+
+    #message {
+      margin-top: 16px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    footer {
+      text-align: center;
+      color: #625873;
+      font-size: 12px;
+      padding: 20px;
+    }
   </style>
 </head>
+
 <body>
   <header>
     <h1>STEPBEAT STUDIO</h1>
     <p>MOVE • SWEAT • FEEL THE BEAT</p>
     <h2>AROROY CLASS</h2>
-    <p>October 22, 2026 | 6:00–7:00 AM</p>
+    <p>October 22, 2026</p>
+    <p>6:00 AM – 7:00 AM</p>
     <p>Aroroy, Masbate</p>
   </header>
 
   <main>
+    <!-- Event fee and slot counter -->
     <section class="card center">
-      <p>ONE SESSION ONLY · 60 SLOTS</p>
+      <p><strong>ONE SESSION ONLY</strong></p>
       <div class="price">₱300</div>
       <p>Registration fee per participant</p>
-     
-<section class="card">
-  <h2>GCash Payment Details</h2>
-  <p>Pay your registration fee before submitting your booking.</p>
 
-  <p><strong>Registration Fee:</strong></p>
-  <h2 style="color:#007dff;font-size:32px;">₱300.00</h2>
-
-  <p><strong>Account Name:</strong><br>
-  MARIA LOUREY MAY NARBONETA</p>
-
-  <p><strong>GCash Number:</strong><br>
-  <span id="gcashNumber">09107042354</span></p>
-
-  <button type="button"
-    onclick="navigator.clipboard.writeText('09107042354')
-      .then(() => alert('GCash number copied!'))
-      .catch(() => alert('GCash number: 09107042354'))">
-    COPY GCASH NUMBER
-  </button>
-
-  <p class="note">
-    After payment, upload your payment screenshot in the booking form.
-    Your registration will remain pending until payment is verified.
-  </p>
-</section>
-
+      <div class="slot-counter">
+        <p class="slot-label">AVAILABLE SLOTS</p>
+        <h2><span id="remainingSlots">60</span> / 60</h2>
+        <p id="slotMessage">60 slots available in total</p>
+      </div>
     </section>
 
+    <!-- ONE GCash payment section -->
     <section class="card">
-      
-<section class="card">
-  <h2>GCash Payment Details</h2>
-  <p>Pay your registration fee before submitting your booking.</p>
+      <h2 class="gcash-title">GCash Payment Details</h2>
+      <p>Pay your registration fee using the details below.</p>
 
-  <p><strong>Registration Fee:</strong></p>
-  <h2 style="color:#007dff;font-size:32px;">₱300.00</h2>
+      <p class="note">Registration fee</p>
+      <div class="price">₱300.00</div>
 
-  <p><strong>Account Name:</strong><br>
-  MARIA LOUREY MAY NARBONETA</p>
+      <p class="note">Account name</p>
+      <p><strong>MARIA LOUREY MAY NARBONETA</strong></p>
 
-  <p><strong>GCash Number:</strong><br>
-  <span id="gcashNumber">09107042354</span></p>
+      <p class="note">GCash number</p>
+      <p class="gcash-number">09107042354</p>
 
-  <button type="button"
-    onclick="navigator.clipboard.writeText('09107042354')
-      .then(() => alert('GCash number copied!'))
-      .catch(() => alert('GCash number: 09107042354'))">
-    COPY GCASH NUMBER
-  </button>
+      <button
+        type="button"
+        class="copy-button"
+        id="copyGcash">
+        COPY GCASH NUMBER
+      </button>
 
-  <p class="note">
-    After payment, upload your payment screenshot in the booking form.
-    Your registration will remain pending until payment is verified.
-  </p>
-</section>
+      <p class="note">
+        Please pay ₱300 and upload your payment screenshot in the
+        registration form below. Your payment must be verified
+        before your registration is confirmed.
+      </p>
+    </section>
 
+    <!-- ONE booking form -->
+    <section class="card">
       <h2>Book Your Slot</h2>
-      <p class="note">Complete the form and upload your payment screenshot to submit your registration.</p>
+      <p class="note">
+        Complete all fields and upload your payment screenshot.
+      </p>
 
       <form id="bookingForm">
         <label for="fullName">Full Name</label>
-        <input id="fullName" name="fullName" type="text"
-          maxlength="150" autocomplete="name" required>
+        <input
+          id="fullName"
+          name="fullName"
+          type="text"
+          maxlength="150"
+          autocomplete="name"
+          required>
 
         <label for="contact">Contact Number</label>
-        <input id="contact" name="contact" type="tel"
-          maxlength="30" autocomplete="tel" required>
+        <input
+          id="contact"
+          name="contact"
+          type="tel"
+          maxlength="30"
+          autocomplete="tel"
+          required>
 
         <label for="payment">Payment Screenshot</label>
-        <input id="payment" name="payment" type="file"
-          accept="image/jpeg,image/png,image/webp" required>
-        <p class="note">Upload a JPG, PNG, or WebP image. Maximum 5 MB.</p>
+        <input
+          id="payment"
+          name="payment"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          required>
 
-        <button id="bookButton" type="submit">BOOK NOW — ₱300</button>
+        <p class="note">
+          Accepted formats: JPG, PNG, or WebP. Maximum size: 5 MB.
+        </p>
+
+        <button id="bookButton" type="submit">
+          BOOK NOW — ₱300
+        </button>
+
         <div id="message" role="status" aria-live="polite"></div>
       </form>
     </section>
   </main>
 
+  <footer>
+    StepBeat Studio · Aroroy Class · October 22, 2026
+  </footer>
+
   <script>
-    // Database connection and secure upload will be added next.
     const form = document.getElementById("bookingForm");
-    const message = document.getElementById("message");
     const payment = document.getElementById("payment");
+    const message = document.getElementById("message");
+    const copyButton = document.getElementById("copyGcash");
+
+    copyButton.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText("09107042354");
+        copyButton.textContent = "GCASH NUMBER COPIED!";
+      } catch {
+        message.textContent = "GCash number: 09107042354";
+      }
+    });
 
     payment.addEventListener("change", () => {
       const file = payment.files[0];
+      message.textContent = "";
+
       if (!file) return;
-      const allowed = ["image/jpeg", "image/png", "image/webp"];
-      if (!allowed.includes(file.type) || file.size > 5 * 1024 * 1024) {
+
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ];
+
+      if (!allowedTypes.includes(file.type) ||
+          file.size > 5 * 1024 * 1024) {
         payment.value = "";
-        message.textContent = "Choose a JPG, PNG, or WebP image up to 5 MB.";
-      } else {
-        message.textContent = "";
+        message.textContent =
+          "Please choose a JPG, PNG, or WebP image up to 5 MB.";
       }
     });
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
+
       message.textContent =
-        "The booking form is ready. Database connection and secure payment upload must be configured before registrations can be accepted.";
+        "The booking system is not connected yet. Your registration has NOT been submitted. Please try again after the booking system is activated.";
     });
   </script>
 </body>
 </html>
-
