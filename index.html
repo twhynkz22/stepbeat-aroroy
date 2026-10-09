@@ -250,46 +250,93 @@
   </footer>
 
   <script>
-    const form = document.getElementById("bookingForm");
-    const payment = document.getElementById("payment");
-    const message = document.getElementById("message");
-    const copyButton = document.getElementById("copyGcash");
+    
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://pdjctvzeltigtcjmstjm.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_rJrKFL7lSqC35TJifyElUw_H_kLGNkf";
 
-    copyButton.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText("09107042354");
-        copyButton.textContent = "GCASH NUMBER COPIED!";
-      } catch {
-        message.textContent = "GCash number: 09107042354";
+  const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  const remainingSlots = document.getElementById("remainingSlots");
+  const slotMessage = document.getElementById("slotMessage");
+  const bookButton = document.getElementById("bookButton");
+  const form = document.getElementById("bookingForm");
+  const payment = document.getElementById("payment");
+  const message = document.getElementById("message");
+
+  async function updateSlots() {
+    try {
+      const { data, error } = await db.rpc(
+        "get_aroroy_slots_remaining"
+      );
+
+      if (error) throw error;
+
+      const slots = Number(data);
+
+      if (!Number.isInteger(slots) || slots < 0 || slots > 60) {
+        throw new Error("Invalid slot count");
       }
-    });
 
-    payment.addEventListener("change", () => {
-      const file = payment.files[0];
-      message.textContent = "";
+      remainingSlots.textContent = slots;
+      slotMessage.textContent =
+        slots === 0 ? "SORRY, ALL SLOTS ARE FULL!" :
+        slots <= 10 ? "Hurry! Only " + slots + " slots left!" :
+        slots + " slots available. Book yours now!";
 
-      if (!file) return;
+      bookButton.disabled = slots === 0;
+      bookButton.textContent =
+        slots === 0 ? "SESSION FULL" : "BOOK NOW — ₱300";
+    } catch (error) {
+      slotMessage.textContent =
+        "Unable to load availability. Please try again shortly.";
+      bookButton.disabled = true;
+      console.error("Slot counter error:", error);
+    }
+  }
 
-      const allowedTypes = [
-        "image/jpeg",
-        "image/png",
-        "image/webp"
-      ];
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+  ];
 
-      if (!allowedTypes.includes(file.type) ||
-          file.size > 5 * 1024 * 1024) {
-        payment.value = "";
-        message.textContent =
-          "Please choose a JPG, PNG, or WebP image up to 5 MB.";
-      }
-    });
+  payment.addEventListener("change", () => {
+    const file = payment.files[0];
+    message.textContent = "";
 
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
+    if (!file) return;
 
+    if (!allowedTypes.includes(file.type) ||
+        file.size > 5 * 1024 * 1024) {
+      payment.value = "";
       message.textContent =
-        "The booking system is not connected yet. Your registration has NOT been submitted. Please try again after the booking system is activated.";
-    });
-  </script>
+        "Upload a JPG, PNG, or WebP image up to 5 MB.";
+    }
+  });
+
+  document.getElementById("copyGcash").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText("09107042354");
+      document.getElementById("copyGcash").textContent =
+        "GCASH NUMBER COPIED!";
+    } catch {
+      message.textContent = "GCash number: 09107042354";
+    }
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    message.textContent =
+      "Online booking is not activated yet. Your registration has not been submitted.";
+  });
+
+  updateSlots();
+  setInterval(updateSlots, 20000);
+</script>
 </body>
 </html>
