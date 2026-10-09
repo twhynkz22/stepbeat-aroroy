@@ -372,14 +372,13 @@ form.addEventListener("submit", async (event) => {
     message.textContent = "Saving your booking...";
 
     const { data, error } = await db.rpc(
-      "submit_aroroy_booking",
-      {
-        p_full_name: fullName,
-        p_contact_number: contactNumber,
-        p_screenshot_path: uploadedPath
-      }
-    );
-
+  "submit_aroroy_booking",
+  {
+    p_contact_number: contactNumber,
+    p_full_name: fullName,
+    p_screenshot_path: uploadedPath
+  }
+);
     if (error) throw error;
 
     const booking = Array.isArray(data) ? data[0] : data;
